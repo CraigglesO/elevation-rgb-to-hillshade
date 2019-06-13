@@ -1,7 +1,7 @@
 {
-  "name": "skeleton-module",
-  "version": "0.0.0",
-  "description": "When creating new NodeJS modules, use this skeletal structure",
+  "name": "elevation-rgb-to-contour",
+  "version": "1.0.0",
+  "description": "Convert RGB raster elevation data to contour lines",
   "main": "lib/index.js",
   "scripts": {
     "lint+build+test": "yarn run lint && yarn run build && yarn run test",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/regia-corporation/skeleton-module.git"
+    "url": "https://github.com/regia-corporation/elevation-rgb-to-contour.git"
   },
   "author": "Craig OConnor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/regia-corporation/skeleton-module/issues"
+    "url": "https://github.com/regia-corporation/elevation-rgb-to-contour/issues"
   },
-  "homepage": "https://github.com/regia-corporation/skeleton-module#readme",
+  "homepage": "https://github.com/regia-corporation/elevation-rgb-to-contour#readme",
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
@@ -40,6 +40,15 @@
     "parser": "babel-eslint",
     "plugins": [
       "flowtype"
+    ],
+    "ignore": [
+      "**/out/",
+      "/lib/"
     ]
+  },
+  "dependencies": {
+    "@mapbox/sphericalmercator": "^1.1.0",
+    "glob": "^7.1.4",
+    "pngjs": "^3.4.0"
   }
 }

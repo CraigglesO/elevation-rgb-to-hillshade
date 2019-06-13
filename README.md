@@ -1,11 +1,11 @@
-# skeleton-module [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+# elevation-rgb-to-contour [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-[travis-image]: https://travis-ci.org/regia-corporation/skeleton-module.svg?branch=master
-[travis-url]: https://travis-ci.org/regia-corporation/skeleton-module
-[npm-image]: https://img.shields.io/npm/v/skeleton-module.svg
-[npm-url]: https://npmjs.org/package/skeleton-module
-[downloads-image]: https://img.shields.io/npm/dm/skeleton-module.svg
-[downloads-url]: https://www.npmjs.com/package/skeleton-module
+[travis-image]: https://travis-ci.org/regia-corporation/elevation-rgb-to-contour.svg?branch=master
+[travis-url]: https://travis-ci.org/regia-corporation/elevation-rgb-to-contour
+[npm-image]: https://img.shields.io/npm/v/elevation-rgb-to-contour.svg
+[npm-url]: https://npmjs.org/package/elevation-rgb-to-contour
+[downloads-image]: https://img.shields.io/npm/dm/elevation-rgb-to-contour.svg
+[downloads-url]: https://www.npmjs.com/package/elevation-rgb-to-contour
 
 ## About
 
@@ -13,7 +13,7 @@
 
 ```sh
 # grab the package
-git clone https://github.com/Regia/skeleton-module.git
+git clone https://github.com/Regia/elevation-rgb-to-contour.git
 # remove the origin
 git remote rm origin
 # download the dependencies
