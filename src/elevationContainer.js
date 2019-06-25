@@ -21,8 +21,17 @@ export type Contours = {
   [key: string | number]: Array< Array<Array<number>> > // an array of 2 point lineStrings
 }
 
+export type ElevationContainerOptions = {
+  smooth?: bool,
+  verbose?: bool,
+  size?: number,
+  units?: string, // meters/feet (1 meter is equal to 3.2808398950131 feet)
+  inputFolder?: string,
+  tippecanoeLayer?: string
+}
+
 export default class ElevationContainer {
-  fileLocation: string
+  inputFolder: string
   merc: SphericalMercator
   bbox: Array<number> // [left-lon, bottom-lat, right-lon, top-lat]
   elevArray: Array<Array<Point>>
@@ -30,22 +39,28 @@ export default class ElevationContainer {
   x: number
   y: number
   zoom: number
+  smooth: bool
   size: number
   verbose: bool
+  units: string
+  tippecanoeLayer: string
 
   // STEP1) Get the bounding box, and create the array of lat/lon, so that we can add the elevations later
-  constructor (x: number, y: number, zoom: number, size?: number = 512, fileLocation?: string = './hillshades', verbose?: bool = true) {
-    this.fileLocation = fileLocation
+  constructor (x: number, y: number, zoom: number, options: ElevationContainerOptions) {
+    this.inputFolder = options.inputFolder || './hillshades'
     this.elevArray = []
     this.contours = {}
     this.x = x
     this.y = y
     this.zoom = zoom
-    this.size = size
-    this.verbose = verbose
-    this.merc = new SphericalMercator({ size })
+    this.smooth = options.smooth || true
+    this.size = options.size || 512
+    this.verbose = options.verbose || true
+    this.units = options.units || 'metric'
+    this.tippecanoeLayer = options.tippecanoeLayer || 'contourLines'
+    this.merc = new SphericalMercator({ size: this.size })
     this.bbox = this.merc.bbox(x, y, zoom)
-    if (verbose) console.log(`${zoom}, ${x}, ${y}`)
+    if (this.verbose) console.log(`${zoom}, ${x}, ${y}`)
     // Prep the elevArray
     for (let y = 0; y < this.size + 2; y++) {
       this.elevArray.push([])
@@ -60,11 +75,11 @@ export default class ElevationContainer {
     // there will be 9 parts but we need 5 for all contours to line up correctly with no overlap
     // utilizing the x, y, and zoom we get:
     return Promise.all([
-      getPNGData(`${this.fileLocation}/${this.zoom}/${this.x - 1}/${this.y - 1}.png`, 'topLeft', this, this.x - 1, this.y - 1),
-      getPNGData(`${this.fileLocation}/${this.zoom}/${this.x}/${this.y - 1}.png`, 'top', this, this.x, this.y - 1),
-      getPNGData(`${this.fileLocation}/${this.zoom}/${this.x - 1}/${this.y}.png`, 'left', this, this.x - 1, this.y),
-      getPNGData(`${this.fileLocation}/${this.zoom}/${this.x}/${this.y}.png`, 'center', this, this.x, this.y),
-      getPNGData(`${this.fileLocation}/${this.zoom}/${this.x - 1}/${this.y + 1}.png`, 'bottomLeft', this, this.x - 1, this.y + 1)
+      getPNGData(`${this.inputFolder}/${this.zoom}/${this.x - 1}/${this.y - 1}.png`, 'topLeft', this, this.x - 1, this.y - 1),
+      getPNGData(`${this.inputFolder}/${this.zoom}/${this.x}/${this.y - 1}.png`, 'top', this, this.x, this.y - 1),
+      getPNGData(`${this.inputFolder}/${this.zoom}/${this.x - 1}/${this.y}.png`, 'left', this, this.x - 1, this.y),
+      getPNGData(`${this.inputFolder}/${this.zoom}/${this.x}/${this.y}.png`, 'center', this, this.x, this.y),
+      getPNGData(`${this.inputFolder}/${this.zoom}/${this.x - 1}/${this.y + 1}.png`, 'bottomLeft', this, this.x - 1, this.y + 1)
     ])
   }
 
@@ -172,7 +187,7 @@ export default class ElevationContainer {
     }
   }
 
-  saveFeatureCollection (name: string, getInd?: Function = getIndex, tippecanoeLayer?: string = 'contourLines', applySmooth?: bool = true) {
+  saveFeatureCollection (name: string, getInd?: Function = getIndex) {
     if (this.verbose) console.log(`SAVING '${name}'...`)
     let featureCollection: FeatureCollection = {
       type: 'FeatureCollection',
@@ -186,7 +201,7 @@ export default class ElevationContainer {
         let feature = {
           type: 'Feature',
           properties: { ele: key, index: getInd(key, this.zoom) },
-          tippecanoe: { layer: tippecanoeLayer },
+          tippecanoe: { layer: this.tippecanoeLayer },
           geometry: {
             type: 'LineString',
             coordinates: line
@@ -196,7 +211,7 @@ export default class ElevationContainer {
       }
     }
 
-    if (applySmooth) featureCollection = smooth(featureCollection)
+    if (this.smooth) featureCollection = smooth(featureCollection)
 
     fs.writeFileSync(name, JSON.stringify(featureCollection))
   }

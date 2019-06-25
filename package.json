@@ -48,7 +48,9 @@
   },
   "dependencies": {
     "@mapbox/sphericalmercator": "^1.1.0",
+    "command-line-args": "^5.1.1",
     "glob": "^7.1.4",
-    "pngjs": "^3.4.0"
+    "pngjs": "^3.4.0",
+    "single-line-log": "^1.1.2"
   }
 }

@@ -32,10 +32,13 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
       fs.createReadStream(fileLocation)
         .pipe(new PNG())
         .on('parsed', function () {
+          let getElevation = (elevContainer.units === 'feet') // otherwise metric ((1 meter is equal to 3.2808398950131 feet))
+            ? (idx) => { return (-10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)) * 3.2808398950131 }
+            : (idx) => { return -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1) }
           if (position === 'topLeft') {
             // We are just getting the bottom right pixel from the image and adding it to the top left:
             let idx = (this.width * (size - 1) + (size - 1)) << 2
-            let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+            let elevation = getElevation(idx)
             elevContainer.elevArray[0][0].elev = elevation
             elevContainer.elevArray[0][0].lat = originLat - ((size - 1) * latOnePixel)
             elevContainer.elevArray[0][0].lon = originLon + ((size - 1) * lonOnePixel)
@@ -43,7 +46,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
             // We are just getting the bottom pixels from the image and adding it to the top:
             for (let x = 0; x < this.width; x++) {
               let idx = (this.width * (size - 1) + x) << 2
-              let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+              let elevation = getElevation(idx)
               elevContainer.elevArray[0][x + 1].elev = elevation // NOTE: the start for the top is 1 block from origin
               elevContainer.elevArray[0][x + 1].lat = originLat - ((size - 1) * latOnePixel)
               elevContainer.elevArray[0][x + 1].lon = originLon + (x * lonOnePixel)
@@ -51,7 +54,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
           } else if (position === 'topRight') {
             // We are just getting the bottom left pixel from the image and adding it to the top right:
             let idx = (this.width * (size - 1) + 0) << 2
-            let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+            let elevation = getElevation(idx)
             elevContainer.elevArray[0][size + 1].elev = elevation
             elevContainer.elevArray[0][size + 1].lat = originLat - ((size - 1) * latOnePixel)
             elevContainer.elevArray[0][size + 1].lon = originLon
@@ -59,7 +62,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
             // We are just getting the rightmost pixels from the image and adding it to the left:
             for (let y = 0; y < this.height; y++) {
               let idx = (this.width * y + (size - 1)) << 2
-              let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+              let elevation = getElevation(idx)
               elevContainer.elevArray[y + 1][0].elev = elevation // // NOTE: the start for the left is 1 block from origin
               elevContainer.elevArray[y + 1][0].lat = originLat - (y * latOnePixel)
               elevContainer.elevArray[y + 1][0].lon = originLon + ((size - 1) * lonOnePixel)
@@ -68,7 +71,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
             for (let y = 0; y < this.height; y++) {
               for (let x = 0; x < this.width; x++) {
                 let idx = (this.width * y + x) << 2
-                let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+                let elevation = getElevation(idx)
                 elevContainer.elevArray[y + 1][x + 1].elev = elevation // NOTE: the center is 1 block from origin in both directions
                 elevContainer.elevArray[y + 1][x + 1].lat = originLat - (y * latOnePixel)
                 elevContainer.elevArray[y + 1][x + 1].lon = originLon + (x * lonOnePixel)
@@ -78,7 +81,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
             // We are just getting the leftmost pixels from the image and adding it to the right:
             for (let y = 0; y < this.height; y++) {
               let idx = (this.width * y + 0) << 2
-              let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+              let elevation = getElevation(idx)
               elevContainer.elevArray[y + 1][size + 1].elev = elevation // // NOTE: the start for the left is 1 block from origin
               elevContainer.elevArray[y + 1][size + 1].lat = originLat - (y * latOnePixel)
               elevContainer.elevArray[y + 1][size + 1].lon = originLon
@@ -86,7 +89,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
           } else if (position === 'bottomLeft') {
             // We are just getting the top right pixel from the image and adding it to the bottom left:
             let idx = (this.width * 0 + (size - 1)) << 2
-            let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+            let elevation = getElevation(idx)
             elevContainer.elevArray[size + 1][0].elev = elevation
             elevContainer.elevArray[size + 1][0].lat = originLat
             elevContainer.elevArray[size + 1][0].lon = originLon + ((size - 1) * lonOnePixel)
@@ -94,7 +97,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
             // We are just getting the top-most pixels from the image and adding it to the bottom:
             for (let x = 0; x < this.width; x++) {
               let idx = (this.width * 0 + x) << 2
-              let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+              let elevation = getElevation(idx)
               elevContainer.elevArray[size + 1][x + 1].elev = elevation // NOTE: the start for the bottom is 1 block from origin
               elevContainer.elevArray[size + 1][x + 1].lat = originLat
               elevContainer.elevArray[size + 1][x + 1].lon = originLon + (x * lonOnePixel)
@@ -102,7 +105,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
           } else if (position === 'bottomRight') {
             // We are just getting the top-left pixel from the image and adding it to the bottom right:
             let idx = (this.width * 0 + 0) << 2
-            let elevation = -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)
+            let elevation = getElevation(idx)
             elevContainer.elevArray[size + 1][size + 1].elev = elevation
             elevContainer.elevArray[size + 1][size + 1].lat = originLat
             elevContainer.elevArray[size + 1][size + 1].lon = originLon

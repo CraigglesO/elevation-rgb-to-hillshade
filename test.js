@@ -4,7 +4,8 @@ elevationToContour('./hillshades', {
   errorHandler: (error) => {
     console.log('ERROR', error)
   },
-  overwrite: false
+  overwrite: false,
+  threads: 1
 })
 
 // elevationToContour([[3106, 6166, 14]], {

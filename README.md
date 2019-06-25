@@ -9,16 +9,7 @@
 
 ## About
 
-**Create new modules with this skeleton**
 
-```sh
-# grab the package
-git clone https://github.com/Regia/elevation-rgb-to-contour.git
-# remove the origin
-git remote rm origin
-# download the dependencies
-yarn
-```
 
 ---
 
