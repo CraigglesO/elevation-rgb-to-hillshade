@@ -2,7 +2,7 @@ const fs = require('fs')
 const { fork } = require('child_process')
 
 const { elevationsPathToArray, createContours } = require('../lib')
-// const log = require('single-line-log')
+const log = require('single-line-log').stdout
 const commandLineArgs = require('command-line-args')
 
 const optionDefinitions = [
@@ -21,11 +21,6 @@ const optionDefinitions = [
 let options = commandLineArgs(optionDefinitions)
 if (!options.overwrite) options.overwrite = false
 if (!options.verbose) options.verbose = false
-
-// process.stdout.on('resize', () => {
-//   console.log('screen size has changed!')
-//   console.log(`${process.stdout.columns}x${process.stdout.rows}`)
-// })
 
 if (options.child) {
   process.on('message', msg => {
@@ -46,19 +41,26 @@ if (options.child) {
     } catch (error) { options.errorHandler(error) }
   }
   // find all elevations if the input is a path and not an array of elevations already
-  let elevations
+  let completed = 0
+  let elevations, total
   [elevations, options] = elevationsPathToArray(options.inputFolder, options)
+  total = elevations.length
   // if we don't have a thread count, just set it to 1
   if (!options.threads) { options.threads = 1 }
 
   if (options.threads > 1) {
     // first split the elevations workload
     let elevationsSplit = splitUp(elevations, options.threads)
+    console.log('split', elevationsSplit)
     for (let i = 0; i < options.threads; i++) {
       const forked = fork(`${process.argv[1]}`, ['--child', i])
       forked.on('message', msg => {
         if (msg.ready) forked.send({ elevations: elevationsSplit[msg.child], options }) // send the workload
-        if (msg.done) {}
+        if (msg.finishedOne) {
+          completed++
+          if (!options.verbose) { log(`${completed}/${total}`) }
+        }
+        if (msg.done) {} // weird ass bug
       })
     }
   } else { // otherwise just run through the elevations

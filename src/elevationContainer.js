@@ -53,11 +53,11 @@ export default class ElevationContainer {
     this.x = x
     this.y = y
     this.zoom = zoom
-    this.smooth = options.smooth || true
-    this.size = options.size || 512
-    this.verbose = options.verbose || true
-    this.units = options.units || 'metric'
-    this.tippecanoeLayer = options.tippecanoeLayer || 'contourLines'
+    this.smooth = (options.smooth) ? options.smooth : true
+    this.size = (options.size) ? options.size : 512
+    this.verbose = (options.verbose) ? options.verbose : false
+    this.units = (options.units) ? options.units : 'metric'
+    this.tippecanoeLayer = (options.tippecanoeLayer) ? options.tippecanoeLayer : 'contourLines'
     this.merc = new SphericalMercator({ size: this.size })
     this.bbox = this.merc.bbox(x, y, zoom)
     if (this.verbose) console.log(`${zoom}, ${x}, ${y}`)

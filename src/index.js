@@ -5,7 +5,6 @@ import glob from 'glob'
 export { default as ElevationContainer } from './elevationContainer'
 
 // TODO: add bin file
-// TODO: multi-core-support
 // TODO: Readme
 
 export type Elevations = Array<Array<number>> // [[x, y, z]]
@@ -67,8 +66,11 @@ export function createContours (elevations: Elevations, options: Options) {
   }
   let elevation = elevations.pop()
   // move on if the file already exists and we are not overwriting
-  if (fs.existsSync(`${options.outputFolder}/${elevation[2]}/${elevation[0]}/${elevation[1]}.geojson`) && options.overwrite === false) return createContours(elevations, options)
-  const elevationContainer = new ElevationContainer(elevation[0], elevation[1], elevation[2], 512, options.inputFolder, options.verbose)
+  if (fs.existsSync(`${options.outputFolder}/${elevation[2]}/${elevation[0]}/${elevation[1]}.geojson`) && options.overwrite === false) {
+    process.send({ finishedOne: true })
+    return createContours(elevations, options)
+  }
+  const elevationContainer = new ElevationContainer(elevation[0], elevation[1], elevation[2], options)
 
   elevationContainer.createElevationMatrix()
     .then(() => {
@@ -85,11 +87,13 @@ export function createContours (elevations: Elevations, options: Options) {
         options.tippecanoeLayer
       )
       // run the createContours until we exhaust list
+      process.send({ finishedOne: true })
       return createContours(elevations, options)
     })
     .catch(error => {
       options.errorHandler(error)
       // run the createContours until we exhaust list
+      process.send({ finishedOne: true })
       return createContours(elevations, options)
     })
 }

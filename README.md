@@ -11,6 +11,33 @@
 
 
 
+
+type Options = {
+  overwrite?: bool,
+  smooth?: bool,
+  verbose?: bool,
+  size?: number,
+  units?: string, // meters & feet
+  inputFolder?: string,
+  outputFolder?: string,
+  tippecanoeLayer?: string,
+  threads?: number,
+  child?: bool
+}
+
+{ name: 'verbose', alias: 'v', type: Boolean },
+{ name: 'input', alias: 'i', type: String },
+{ name: 'output', alias: 'o', type: Number },
+{ name: 'size', alias: 's', type: Number },
+{ name: 'units', alias: 'u', type: String },
+{ name: 'overwrite', alias: 'w', type: Boolean },
+{ name: 'smooth', type: Boolean },
+{ name: 'tippecanoeLayer', alias: 'l', type: String },
+{ name: 'threads', alias: 't', type: Number },
+{ name: 'child', alias: 'c', type: Number }
+
+
+
 ---
 
 ## ISC License (ISC)
