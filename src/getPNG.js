@@ -32,9 +32,7 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
       fs.createReadStream(fileLocation)
         .pipe(new PNG())
         .on('parsed', function () {
-          let getElevation = (elevContainer.units === 'feet') // otherwise metric ((1 meter is equal to 3.2808398950131 feet))
-            ? (idx) => { return (-10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1)) * 3.2808398950131 }
-            : (idx) => { return -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1) }
+          let getElevation = (idx) => { return -10000 + ((this.data[idx] * 256 * 256 + this.data[idx + 1] * 256 + this.data[idx + 2]) * 0.1) }
           if (position === 'topLeft') {
             // We are just getting the bottom right pixel from the image and adding it to the top left:
             let idx = (this.width * (size - 1) + (size - 1)) << 2

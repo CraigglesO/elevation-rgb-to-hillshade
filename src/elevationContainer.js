@@ -43,7 +43,6 @@ export type ElevationContainerOptions = {
   smooth?: bool,
   verbose?: bool,
   size?: number,
-  units?: string, // meters/feet (1 meter is equal to 3.2808398950131 feet)
   inputFolder?: string,
   tippecanoeLayer?: string
 }
@@ -59,7 +58,6 @@ export default class ElevationContainer {
   smooth: bool
   size: number
   verbose: bool
-  units: string
   tippecanoeLayer: string
 
   // STEP1) Get the bounding box, and create the array of lat/lon, so that we can add the elevations later
@@ -72,7 +70,6 @@ export default class ElevationContainer {
     this.smooth = (options.smooth) ? options.smooth : true
     this.size = (options.size) ? options.size : 512
     this.verbose = (options.verbose) ? options.verbose : false
-    this.units = (options.units) ? options.units : 'metric'
     this.tippecanoeLayer = (options.tippecanoeLayer) ? options.tippecanoeLayer : 'hillshade'
     this.merc = new SphericalMercator({ size: this.size })
     this.bbox = this.merc.bbox(x, y, zoom)
