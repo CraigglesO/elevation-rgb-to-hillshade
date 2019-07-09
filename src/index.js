@@ -66,7 +66,7 @@ export function createContours (elevations: Elevations, options: Options) {
   let elevation = elevations.pop()
   // move on if the file already exists and we are not overwriting
   if (fs.existsSync(`${options.outputFolder}/${elevation[2]}/${elevation[0]}/${elevation[1]}.geojson`) && options.overwrite === false) {
-    process.send({ finishedOne: true })
+    if (options.child) { process.send({ finishedOne: true }) }
     return createContours(elevations, options)
   }
   const elevationContainer = new ElevationContainer(elevation[0], elevation[1], elevation[2], options)
@@ -87,13 +87,13 @@ export function createContours (elevations: Elevations, options: Options) {
       //   'pbf'
       // )
       // run the createContours until we exhaust list
-      process.send({ finishedOne: true })
+      if (options.child) { process.send({ finishedOne: true }) }
       return createContours(elevations, options)
     })
     .catch(error => {
       options.errorHandler(error)
       // run the createContours until we exhaust list
-      process.send({ finishedOne: true })
+      if (options.child) { process.send({ finishedOne: true }) }
       return createContours(elevations, options)
     })
 }

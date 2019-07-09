@@ -1,11 +1,11 @@
-# elevation-rgb-to-contour [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+# elevation-rgb-to-hillshade [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-[travis-image]: https://travis-ci.org/regia-corporation/elevation-rgb-to-contour.svg?branch=master
-[travis-url]: https://travis-ci.org/regia-corporation/elevation-rgb-to-contour
-[npm-image]: https://img.shields.io/npm/v/elevation-rgb-to-contour.svg
-[npm-url]: https://npmjs.org/package/elevation-rgb-to-contour
-[downloads-image]: https://img.shields.io/npm/dm/elevation-rgb-to-contour.svg
-[downloads-url]: https://www.npmjs.com/package/elevation-rgb-to-contour
+[travis-image]: https://travis-ci.org/regia-corporation/elevation-rgb-to-hillshade.svg?branch=master
+[travis-url]: https://travis-ci.org/regia-corporation/elevation-rgb-to-hillshade
+[npm-image]: https://img.shields.io/npm/v/elevation-rgb-to-hillshade.svg
+[npm-url]: https://npmjs.org/package/elevation-rgb-to-hillshade
+[downloads-image]: https://img.shields.io/npm/dm/elevation-rgb-to-hillshade.svg
+[downloads-url]: https://www.npmjs.com/package/elevation-rgb-to-hillshade
 
 ## About
 
