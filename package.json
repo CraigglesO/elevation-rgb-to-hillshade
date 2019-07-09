@@ -1,8 +1,11 @@
 {
   "name": "elevation-rgb-to-contour",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert RGB raster elevation data to contour lines",
   "main": "lib/index.js",
+  "bin": {
+    "elevationToContour": "bin/index.js"
+  },
   "scripts": {
     "lint+build+test": "yarn run lint && yarn run build && yarn run test",
     "lint": "echo linting... && standard ./src/**/*.js && echo 'successfully linted'",
