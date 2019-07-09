@@ -3,3 +3,4 @@ test
 out/*
 src/*
 hillshades/*
+hillshadeTests/*

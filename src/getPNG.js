@@ -23,11 +23,11 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
       let bbox: [number, number, number, number] = merc.bbox(mercX, mercY, elevContainer.zoom)
       let lonRange: number = bbox[2] - bbox[0]
       let latRange: number = bbox[3] - bbox[1]
-      let lonOnePixel = lonRange / size
-      let latOnePixel = latRange / size
+      let lonOnePixel = lonRange / (size - 1)
+      let latOnePixel = latRange / (size - 1)
       // the origin is one block up and one block left, as we need data outside our image to ensure the lines "line-up" post processing
-      let originLon = bbox[0] + (lonOnePixel / 2) // remember that we want the centerpoints, not the outer edges, so we add a half.
-      let originLat = bbox[3] + (latOnePixel / 2) // we want to start top left for reading the PNG's sake.
+      let originLon = bbox[0] // remember that we want the edges, not the centerpoits.
+      let originLat = bbox[3] // we want to start top left for reading the PNG's sake.
       // if it does we setup the stream
       fs.createReadStream(fileLocation)
         .pipe(new PNG())

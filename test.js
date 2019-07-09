@@ -5,7 +5,8 @@ elevationToContour('./hillshades', {
     console.log('ERROR', error)
   },
   overwrite: false,
-  verbose: true
+  verbose: true,
+  tippecanoeLayer: 'regiaShades'
 })
 
 // elevationToContour([[3106, 6166, 14]], {
