@@ -1,2 +1,5 @@
 src
 test
+out/*
+src/*
+hillshades/*
