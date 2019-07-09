@@ -19,10 +19,10 @@ export default function getPNGData (fileLocation: string, position: PositionEnum
       else resolve()
     } else {
       let size = elevContainer.size
-      let merc = new SphericalMercator({ size })
-      let bbox = merc.bbox(mercX, mercY, elevContainer.zoom)
-      let lonRange = bbox[2] - bbox[0]
-      let latRange = bbox[3] - bbox[1]
+      let merc: SphericalMercator = new SphericalMercator({ size })
+      let bbox: [number, number, number, number] = merc.bbox(mercX, mercY, elevContainer.zoom)
+      let lonRange: number = bbox[2] - bbox[0]
+      let latRange: number = bbox[3] - bbox[1]
       let lonOnePixel = lonRange / size
       let latOnePixel = latRange / size
       // the origin is one block up and one block left, as we need data outside our image to ensure the lines "line-up" post processing

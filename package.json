@@ -1,7 +1,7 @@
 {
-  "name": "elevation-rgb-to-contour",
+  "name": "elevation-rgb-to-hillshade",
   "version": "1.0.1",
-  "description": "Convert RGB raster elevation data to contour lines",
+  "description": "Convert RGB raster elevation data to vectorized hillshades",
   "main": "lib/index.js",
   "bin": {
     "elevationToContour": "bin/index.js"
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/regia-corporation/elevation-rgb-to-contour.git"
+    "url": "https://github.com/regia-corporation/elevation-rgb-to-hillshade.git"
   },
   "author": "Craig OConnor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/regia-corporation/elevation-rgb-to-contour/issues"
+    "url": "https://github.com/regia-corporation/elevation-rgb-to-hillshade/issues"
   },
-  "homepage": "https://github.com/regia-corporation/elevation-rgb-to-contour#readme",
+  "homepage": "https://github.com/regia-corporation/elevation-rgb-to-hillshade#readme",
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
@@ -52,8 +52,11 @@
   "dependencies": {
     "@mapbox/sphericalmercator": "^1.1.0",
     "command-line-args": "^5.1.1",
+    "geojson-vt": "^3.2.1",
     "glob": "^7.1.4",
     "pngjs": "^3.4.0",
-    "single-line-log": "^1.1.2"
+    "point-in-polygon": "^1.0.1",
+    "single-line-log": "^1.1.2",
+    "vt-pbf": "^3.1.1"
   }
 }

@@ -4,7 +4,6 @@ import glob from 'glob'
 
 export { default as ElevationContainer } from './elevationContainer'
 
-// TODO: add bin file
 // TODO: Readme
 
 export type Elevations = Array<Array<number>> // [[x, y, z]]
@@ -75,17 +74,18 @@ export function createContours (elevations: Elevations, options: Options) {
   elevationContainer.createElevationMatrix()
     .then(() => {
       // first create lines
-      elevationContainer.createContourLines(options.getStepSize)
-      // conjoin the lines:
-      elevationContainer.contoursToMultiLineStrings()
+      elevationContainer.createDarkLightLines()
       // then save as a FeatureCollection => outFolder/z/x/y.geojson
       if (!fs.existsSync(`${options.outputFolder}/${elevation[2]}`)) fs.mkdirSync(`${options.outputFolder}/${elevation[2]}`)
       if (!fs.existsSync(`${options.outputFolder}/${elevation[2]}/${elevation[0]}`)) fs.mkdirSync(`${options.outputFolder}/${elevation[2]}/${elevation[0]}`)
       elevationContainer.saveFeatureCollection(
         `${options.outputFolder}/${elevation[2]}/${elevation[0]}/${elevation[1]}.geojson`,
-        options.getIndex,
-        options.tippecanoeLayer
+        'geojson'
       )
+      // elevationContainer.saveFeatureCollection(
+      //   `${options.outputFolder}/${elevation[2]}/${elevation[0]}/${elevation[1]}.vector.pbf`,
+      //   'pbf'
+      // )
       // run the createContours until we exhaust list
       process.send({ finishedOne: true })
       return createContours(elevations, options)

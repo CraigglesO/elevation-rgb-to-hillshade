@@ -68,11 +68,11 @@ if (options.child) {
   }
 }
 
-function splitUp (arr, n) {
-  let res = []
+function splitUp (arr: Array<any>, n: number) {
+  let res: Array<any> = []
   for (let j = 0; j < n; j++) { res.push([]) }
-  let j = 0
-  for (let i = 0, al = arr.length; i < al; i++) {
+  let j: number = 0
+  for (let i: number = 0, al: number = arr.length; i < al; i++) {
     res[j].push(arr[i])
     j++
     if (j >= n) j = 0
